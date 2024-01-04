@@ -2,8 +2,9 @@ const express = require("express");
 const Connection = require("./dbConnect.js")
 const app = express();
 const userRouter = require("./routes/userRoutes.js")
+const productRouter = require("./routes/productRoutes.js")
 app.use(express.json());
-app.use("/api",userRouter)
+app.use("/api",userRouter,productRouter)
 
 
 app.listen(8080,async()=>{

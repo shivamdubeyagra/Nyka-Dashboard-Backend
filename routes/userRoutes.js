@@ -1,6 +1,8 @@
 const express = require("express");
 const bcrypt = require("bcrypt")
 const UserModel = require("../models/userModel.js")
+const {BlacklistModel} = require("../models/blacklistModel.js")
+const {authenticator} = require("../middlewares/authMiddleware.js")
 const jwt = require("jsonwebtoken")
 const userRouter = express.Router();
 
@@ -70,6 +72,18 @@ userRouter.post("/login", async (req, res) => {
       return res
         .status(400)
         .send({ msg: "Something went wront in the login catch block" });
+    }
+});
+userRouter.get("/logout", authenticator, async (req, res) => {
+    try {
+      const token = req?.headers?.authorization?.split(" ")[1];
+      const blacklistToken = new BlacklistModel({ token });
+      await blacklistToken.save();
+      return res.status(200).send({ msg: "User has been logged out" });
+    } catch (error) {
+      return res
+        .status(400)
+        .send({ msg: "Something went wront in the logout catch" });
     }
 });
 module.exports = userRouter
