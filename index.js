@@ -1,10 +1,12 @@
 const express = require("express");
 const Connection = require("./dbConnect.js")
 const app = express();
-const userRouter = require("./routes/userRoutes.js")
-const productRouter = require("./routes/productRoutes.js")
+const cors = require("cors");
+const userRouter = require("./routes/userRoutes.js");
+const productRouter = require("./routes/productRoutes.js");
+app.use(cors());
 app.use(express.json());
-app.use("/api",userRouter,productRouter)
+app.use("/api",userRouter,productRouter);
 
 
 app.listen(8080,async()=>{
